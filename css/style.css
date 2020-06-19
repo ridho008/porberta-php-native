@@ -1,0 +1,45 @@
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.gambar {
+	height: 400px;
+	padding: 0;
+	/*object-position: center;
+	object-fit: cover;*/
+}
+
+.gambar img {
+	height: 200px;
+	object-position: center;
+	object-fit: cover;
+}
+
+.feature-img {
+	border: 1px solid rgba(0,0,0,.1);
+}
+
+.feature-img img {
+	width: 100%;
+	object-position: center;
+	object-fit: cover;
+}
+
+.regis img {
+	width: 100%;
+	object-fit: cover;
+	height: 87vh;
+	filter: grayscale(50%);
+}
+
+.regis h2 {
+	position: absolute;
+	top: 450px;
+	left: 130px;
+	color: #fff;
+	text-shadow: 1px 1px 3px rgba(0,0,0,.3);
+}
+
+.formregis h3 {
+	font-weight: bold;
+}
