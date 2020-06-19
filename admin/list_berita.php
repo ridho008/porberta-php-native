@@ -33,11 +33,9 @@ $list_berita = query("SELECT * FROM tb_berita
     <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="<?= base_url('report/report_pdf.php'); ?>" target="_blank">Report to PDF</a></li>
-    <li><a href="#">Report to PDF per tanggal</a></li>
-    <li><a href="#">Something else here</a></li>
-    <li role="separator" class="divider"></li>
-    <li><a href="#">Separated link</a></li>
+    <li><a href="<?= base_url('report/report_pdf.php'); ?>" target="_blank">Export to PDF</a></li>
+    <li><a href="reportpdftgl.php">Export to PDF per tanggal</a></li>
+    <li><a href="<?= base_url('report/reportexcel.php'); ?>">Export to Excel</a></li>
   </ul>
 </div>
 <table class="table" id="datatables">
