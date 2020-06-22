@@ -2,6 +2,12 @@
 require '../config/functions.php';
 require 'layout/header.php';
 
+// mengatasi iseng menulis url
+if(!isset($_GET['id'])) {
+	header("Location: " . base_url('admin/page_kontak.php?id=1'));
+	exit;
+}
+
 $id = $_GET['id'];
 
 $pages = query("SELECT * FROM tb_pages WHERE id_pages = $id")[0];

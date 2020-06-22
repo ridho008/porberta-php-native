@@ -1,6 +1,12 @@
 <?php 
-require 'layout/header.php';
 require '../config/functions.php';
+require 'layout/header.php';
+
+// mengatasi iseng menulis url
+if(!isset($_GET['id'])) {
+	header("Location: " . base_url('admin/list_admin.php'));
+	exit;
+}
 
 $id = $_GET['id'];
 if(isset($_POST['edit_admin'])) {

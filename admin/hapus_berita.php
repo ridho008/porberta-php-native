@@ -1,6 +1,13 @@
 <?php 
+require '../config/functions.php';
 require '../config/db_connect.php';
-// require '../config/functions.php';
+
+// mengatasi iseng menulis url
+if(!isset($_GET['id'])) {
+	header("Location: " . base_url('admin/list_berita.php'));
+	exit;
+}
+
 $id = $_GET['id'];
 $result = mysqli_query($conn, "SELECT * FROM tb_berita WHERE id_berita = $id");
 // ubah file result menjadi assosiative

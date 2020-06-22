@@ -44,13 +44,9 @@ if(isset($_POST['regis'])) {
     </ul>
     <ul class="navbar-nav float-right">
     <li class="nav-item">
-        <a class="nav-link text-white" href="logis/registrasi.php" tabindex="-1" aria-disabled="true">Register</a>
+        <a class="nav-link text-white btn btn-outline-secondary" href="logis/login.php" tabindex="-1" aria-disabled="true">Login</a>
       </li>
       </ul>
-    <form class="form-inline my-2 my-lg-0" action="cari.php" method="get">
-      <input class="form-control mr-sm-2" type="search" placeholder="Cari" name="keyword">
-      <button class="btn btn-light my-2 my-sm-0" name="cari" type="submit">Cari</button>
-    </form>
   </div>
 </nav>
 
@@ -69,10 +65,12 @@ if(isset($_POST['regis'])) {
 					<div class="form-group">
 						<label for="username">Username</label>
 						<input type="text" name="username" id="username" required class="form-control">
+						<small id="emailHelp" class="form-text text-muted"> username 8 digit, agar menjaga keamanan.</small>
 					</div>
 					<div class="form-group">
 						<label for="password">Password</label>
 						<input type="password" name="password" id="password" required class="form-control">
+						<small id="emailHelp" class="form-text text-muted">Wajib/lebih password 12 digit.</small>
 					</div>
 					<div class="form-group">
 						<label for="password2">Konfir Password</label>

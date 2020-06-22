@@ -1,5 +1,12 @@
 <?php 
+require '../config/functions.php';
 require 'layout/header.php';
+
+// mengatasi iseng menulis url
+if(!isset($_GET['id'])) {
+	header("Location: " . base_url('admin/list_admin.php'));
+	exit;
+}
 
 $id = $_GET['id'];
 $result = mysqli_query($conn, "SELECT * FROM admin WHERE id_admin = $id");

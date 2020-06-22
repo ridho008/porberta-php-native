@@ -297,11 +297,22 @@ function register($data) {
 	global $conn;
 	$nama_lengkap = htmlspecialchars($data['nama_lengkap']);
 	$username = htmlspecialchars($data['username']);
-	$password = htmlspecialchars($data['password']);
-	$password2 = htmlspecialchars($data['password2']);
+	$password = mysqli_real_escape_string($conn, $data['password']);
+	$password2 = mysqli_real_escape_string($conn, $data['password2']);
 
 	if(empty($nama_lengkap && $username && $username && $password && $password2)) {
 		echo "<script>alert('Pastikan sudah mengisi inputan.')</script>";
+			return false;
+	}
+
+	// panjang username < 12
+	if(strlen($username) < 8) {
+		echo "<script>alert('Username terlalu pendek.')</script>";
+			return false;
+	}
+
+	if(strlen($password) < 12) {
+		echo "<script>alert('password maksimal 12 digit.')</script>";
 			return false;
 	}
 
@@ -310,6 +321,7 @@ function register($data) {
 			return false;
 	}
 
+	// jika user tidak mengupload gambar
 	$namaGambar = $_FILES['gambar_admin']['error'];
 	if($namaGambar === 4) {
 		echo "<script>alert('Upload gambar dulu.')</script>";
