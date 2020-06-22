@@ -12,7 +12,7 @@ function query($query) {
 }
 
 function base_url($url = null) {
-	$base_url = 'http://localhost/berita_kita/';
+	$base_url = 'http://localhost/porberta-php-native/';
 	if($url != null) {
 		return $base_url . $url;
 	} else {
