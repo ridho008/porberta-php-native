@@ -43,7 +43,8 @@ $kategori = query("SELECT * FROM tb_kategori ORDER BY nama_kategori ASC");
 	</div>
 	<div class="form-group">
 		<label for="gambar_berita">Gambar</label>
-		<input type="file" name="gambar_berita" id="gambar_berita">
+		<input type="file" name="gambar_berita" id="gambar_berita" class="gambar_berita" onchange="previewImage()">
+		<img src="<?= base_url('img/nophoto.jpg'); ?>" width="100" class="img-preview">
 	</div>
 	<div class="form-group">
 		<button type="submit" name="tambah" class="btn btn-primary">Tambah Data Berita</button>

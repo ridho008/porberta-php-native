@@ -20,55 +20,94 @@ function base_url($url = null) {
 	}
 }
 
+function upload_berita() {
+	$nama_file = $_FILES['gambar_berita']['name'];
+	$tipe_file = $_FILES['gambar_berita']['type'];
+	$error = $_FILES['gambar_berita']['error'];
+	$ukuran_file = $_FILES['gambar_berita']['size'];
+	$tmp_file = $_FILES['gambar_berita']['tmp_name'];
+
+	// cek jika user tidak mengupload foto, gunakan foto default
+	if($error == 4) {
+		return 'nophoto.jpg';
+	}
+
+	// cek ektensi gambar
+	$daftar_gambar = ['jpg','jpeg','png'];
+	$ektensi_gambar = explode('.', $nama_file);
+	$ektensi_gambar = strtolower(end($ektensi_gambar));
+
+	if(!in_array($ektensi_gambar, $daftar_gambar)) {
+		echo "<script>alert('Yang anda upload bukan gambar.')</script>";
+		return false;
+	}
+
+	// mengatasi format gambar yang di edit
+	if($tipe_file != 'image/jpeg' && $tipe_file != 'image/png') {
+		echo "<script>alert('Yang anda pilih bukan gambar!.')</script>";
+		return false;
+	}
+
+	// cek ukuran gambar
+	if($ukuran_file > 1000000) {
+		echo "<script>alert('Ukuran gambar terlalu besar.')</script>";
+		return false;
+	}
+
+	// generate nama gambar
+	$nama_file_baru = uniqid();
+	$nama_file_baru .= '.';
+	$nama_file_baru .= $ektensi_gambar;
+
+	// lolos pengecekan
+	move_uploaded_file($tmp_file, "../img/" . $nama_file_baru);
+	return $nama_file_baru;
+
+}
+
 function tambah_berita($data) {
 	global $conn;
 	$judul_berita = htmlspecialchars($data["judul_berita"]);
 	$isi_berita = htmlspecialchars($data["isi_berita"]);
 	$id_kategori = htmlspecialchars($data["id_kategori"]);
-	// $gambar_berita = htmlspecialchars($data["gambar_berita"]);
-	$cekGambar = $_FILES['gambar_berita']['error'];
 
-	// cek apakah inputan sudah di isi
-	if(empty($judul_berita && $isi_berita && $id_kategori)) {
-		echo "<script>alert('Isi data dengan lengkap.')</script>";
+	// cek gambar
+	$gambar_berita = upload_berita();
+	if(!$gambar_berita) {
 		return false;
 	}
 
-	if($cekGambar === 4) {
-		echo "<script>alert('Pilih gambar terlebih dahulu.')</script>";
+	$query = "INSERT INTO tb_berita (judul_berita, isi_berita, id_kategori, gambar_berita) VALUES ('$judul_berita', '$isi_berita', '$id_kategori', '$gambar_berita')";
+	mysqli_query($conn, $query) or die(mysqli_error($conn));
+	return mysqli_affected_rows($conn);
+}
+
+function edit_berita($data) {
+	global $conn;
+	$id = $data['id_berita'];
+	$judul_berita = htmlspecialchars($data["judul_berita"]);
+	$isi_berita = htmlspecialchars($data["isi_berita"]);
+	$id_kategori = htmlspecialchars($data["id_kategori"]);
+	$gambar_lama = $data['gambarLama'];
+
+	// cek gambar
+	$gambar_berita = upload_berita();
+	if(!$gambar_berita) {
 		return false;
 	}
 
-	
-	// upload gambar
-	$ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
-	$extensi = explode(".", $_FILES['gambar_berita']['name']);
-	$gambar_berita = "brg-".round(microtime(true)).".".end($extensi);
-	$sumber = $_FILES['gambar_berita']['tmp_name'];
-	// cek apakah gambar yang diupload ?
-	if(!in_array($gambar_berita, $ekstensiGambarValid)) {
-		echo "<script>alert('yang anda upload bukan gambar.')</script>";
-		return false;
+	if($gambar_berita == 'nophoto.jpg') {
+		$gambar_berita = $gambar_lama;
 	}
-	move_uploaded_file($sumber, "../img/" . $gambar_berita);
 
-
-
-
-	// generate gambar
-	// $gambarBaru = uniqid();
-	// $gambarBaru .= '.';
-	// $gambarBaru .= $ekstensiGambar;
-	// move_uploaded_file($gambar_berita, "../img/" . $ekstensiGambar);
-	// return $gambarBaru;
-
-	// $gambar_berita = upload();
-	// if(!$gambar_berita) {
-	// 	return false;
-	// }
-
-	$result = mysqli_query($conn, "INSERT INTO tb_berita (judul_berita, isi_berita, id_kategori, gambar_berita) VALUES ('$judul_berita', '$isi_berita', '$id_kategori', '$gambar_berita')") or die(mysqli_error($conn));
-
+	$query = "UPDATE tb_berita SET
+						judul_berita = '$judul_berita',
+						isi_berita = '$isi_berita',
+						id_kategori = '$id_kategori',
+						gambar_berita = '$gambar_berita'
+						WHERE id_berita = $id
+					";
+	mysqli_query($conn, $query) or die(mysqli_error($conn));
 	return mysqli_affected_rows($conn);
 }
 
@@ -120,25 +159,6 @@ function upload() {
 	return $namaFileBaru;
 }
 
-function edit_berita($data) {
-	global $conn;
-	$id = $data['id_berita'];
-	$judul_berita = htmlspecialchars($data["judul_berita"]);
-	$isi_berita = htmlspecialchars($data["isi_berita"]);
-	$id_kategori = htmlspecialchars($data["id_kategori"]);
-	$gambarLama = $data["gambarLama"];
-
-	// cek upload gambar
-	if($_FILES['gambar_berita']['error'] === 4) {
-		$gambar_berita = $gambarLama;
-	} else {
-		$gambar_berita = upload();
-	}
-
-	$result = mysqli_query($conn, "UPDATE tb_berita SET judul_berita = '$judul_berita', isi_berita = '$isi_berita', id_kategori = '$id_kategori', gambar_berita = '$gambar_berita' WHERE id_berita = $id") or die(mysqli_error($conn));
-
-	return mysqli_affected_rows($conn);
-}
 
 // ---------KATEGORI-------------
 function tambah_kategori($data) {

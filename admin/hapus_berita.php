@@ -13,7 +13,7 @@ $result = mysqli_query($conn, "SELECT * FROM tb_berita WHERE id_berita = $id");
 // ubah file result menjadi assosiative
 $data = mysqli_fetch_assoc($result);
 $gambar = $data['gambar_berita'];
-if(file_exists("../img/" . $gambar)) {
+if($gambar != 'nophoto.jpg') {
 	unlink("../img/" . $gambar);
 }
 

@@ -37,7 +37,6 @@ if(isset($_POST['edit'])) {
 	<div class="form-group">
 			<label for="judul_berita">Judul Berita</label>
 			<input type="hidden" name="id_berita" id="id_berita" value="<?= $berita["id_berita"]; ?>">
-			<input type="hidden" name="gambarLama" id="gambarLama" value="<?= $berita["gambar_berita"]; ?>">
 			<input type="text" name="judul_berita" id="judul_berita" value="<?= $berita["judul_berita"]; ?>" class="form-control">
 	</div>
 	<div class="form-group">
@@ -55,8 +54,9 @@ if(isset($_POST['edit'])) {
 	</div>
 	<div class="form-group">
 			<label for="gambar_berita">Gambar</label>
-			<img src="../img/<?= $berita["gambar_berita"]; ?>" width="50">
-			<input type="file" name="gambar_berita" id="gambar_berita" class="form-control-file">
+			<input type="hidden" name="gambarLama" id="gambarLama" value="<?= $berita["gambar_berita"]; ?>">
+			<input type="file" name="gambar_berita" id="gambar_berita" class="gambar_berita" onchange="previewImage()">
+			<img src="../img/<?= $berita['gambar_berita']; ?>" width="100" class="img-preview">
 	</div>
 	<div class="form-group">
 			<button type="submit" name="edit" class="btn btn-primary">Edit Data Berita</button>
